@@ -500,7 +500,12 @@ def normal_login_page(called_directly=True):
         html.open_div(id_="login_message")
         if config.login_screen.get("login_message_popup"):
             html.write_html("""<script type='text/javascript'> alert(' """)
-            html.write_html(config.login_screen["login_message"][:-1]) # FIXME: escape quotes ; FIXME: only remove last char if newline
+# FIXME: locate another local variable name example in the code base to model
+            repl_message = config.login_screen["login_message"]
+            if ('\n' == repl_message[-1]):
+                repl_message = repl_message[:-1]
+            repl_message = repl_message.replace('\n', "\\n")
+            html.write_html(repl_message)
             html.write_html(""" '); </script>""")
         else:
             html.show_info(config.login_screen["login_message"])
