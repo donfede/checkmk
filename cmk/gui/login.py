@@ -498,7 +498,12 @@ def normal_login_page(called_directly=True):
 
     if config.login_screen.get("login_message"):
         html.open_div(id_="login_message")
-        html.show_info(config.login_screen["login_message"])
+        if config.login_screen.get("login_message_popup"):
+            html.write_html("""<script type='text/javascript'> alert(' """)
+            html.write_html(config.login_screen["login_message"][:-1]) # FIXME: escape quotes ; FIXME: only remove last char if newline
+            html.write_html(""" '); </script>""")
+        else:
+            html.show_info(config.login_screen["login_message"])
         html.close_div()
 
     footer = []

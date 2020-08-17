@@ -41,6 +41,7 @@ from cmk.gui.globals import html
 from cmk.gui.valuespec import (
     Dictionary,
     TextAscii,
+    TextAreaUnicode,
     TextUnicode,
     DropdownChoice,
     Tuple,
@@ -1019,13 +1020,21 @@ class ConfigVariableLoginScreen(ConfigVariable):
                      title=_("Hide Check_MK version"),
                      totext=_("Hide the Check_MK version from the login box"),
                  )),
+                # HACK Welcome greeter banner ; this could be placed under login_message, provided old configs are not harmed
+                # FIXME: ideally this would be a sub-item of "login_message", but unsure how to convert historic data.
+                ("login_message_popup",
+                 FixedValue(
+                     True,
+                     title=_("Display a popup greeter banner"),
+                     totext=_("Display a popup greeter banner with the login message before login"),
+                 )),
                 ("login_message",
-                 TextUnicode(
+                 TextAreaUnicode(
                      title=_("Show a login message"),
                      help=
                      _("You may use this option to give your users an informational text before logging in."
                       ),
-                     size=80,
+                     rows=2,
                  )),
                 ("footer_links",
                  ListOf(
